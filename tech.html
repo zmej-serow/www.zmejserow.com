@@ -1,0 +1,10 @@
+---
+layout: layout.liquid
+eleventyExcludeFromCollections: true
+---
+{% assign var currentMonth = 0 %}
+{% assign var currentYear = 0 %}
+
+{% for post in collections.tech reversed %}
+    {% include record %}
+{% endfor %}

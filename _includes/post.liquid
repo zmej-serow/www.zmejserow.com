@@ -1,0 +1,22 @@
+---
+layout: layout.liquid
+---
+<div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                {{ page.fileSlug }}
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                {{ page.date | date: "%e/%m/%Y" }}
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        {{ content }}
+
+    </div>
+    <div class="column"></div>
+</div>

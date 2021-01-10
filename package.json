@@ -1,0 +1,23 @@
+{
+    "name": "titanium",
+    "version": "1.0.0",
+    "description": "static site",
+    "main": "sass/zmejstyles.scss",
+    "dependencies": {
+    },
+    "devDependencies": {
+        "@11ty/eleventy": "^0.11.1",
+        "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.5",
+        "bulma": "^0.9.1",
+        "node-sass": "^5.0.0"
+    },
+    "author": "zmej serow",
+    "license": "MIT",
+    "scripts": {
+        "build": "env NODE_ENV=production npx eleventy --pathprefix 'www.zmejserow.com'",
+        "serve": "npx eleventy --serve",
+        "css-build": "node-sass --omit-source-map-url sass/zmejstyles.scss css/zmejstyles.css --output-style compressed",
+        "css-watch": "npm run css-build -- --watch",
+        "css-start": "npm run css-watch"
+    }
+}
