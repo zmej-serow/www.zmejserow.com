@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Пока страшен Haskell
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                 9/12/2019
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Пока я только начинаю разбираться с хаскеллем, многие его фишки выглядят страшно и непонятно. Всё-таки велика разница между ним и привычными императивными языками. Но я всё равно продолжаю: очень нравится лаконичность и ёмкость кода. А ещё он здорово заставляет думать иначе, другими категориями. Приходится мыслить декларативно, не сильно отвлекаясь на последовательность действий, которые приведут к результату.</p>
+<p>Писать на нём пока сложно. Непривычен синтаксис, незнакомы библиотеки, непросто было даже подобрать себе удобную среду разработки. Очень много времени тратится в попытках постичь документацию к модулям, которые я использую в проекте. Почти нет примеров кода, в которых можно было бы подсмотреть, как пользоваться той или иной функцией, когда стандартного описания не хватает. Да что там -- документация к библиотекам, как правило, просто отвратительная. Но постепенно код становится всё более и более прозрачным и понятным; одно это уже приносит невероятное удовольствие. И потихоньку начинаешь понимать, почему некоторые называют его Python4.</p>
+<p>Я попробую записывать мысли, здорово упростившие мне понимание концепций языка. Надеюсь удержать уровень повествования выше &quot;собственного блокнота, который никому не надо показывать&quot;. Хочется не просто зафиксировать прорывные этапы понимания, но объяснить их своим языком так, чтобы, возможно, помочь кому-то ещё &quot;схватить&quot; язык.</p>
+<h3>Запись функций</h3>
+<p>Самое важное: символ <code>=</code> -- это именно математический знак равенства, а не присваивания, как во многих других языках. Мы как бы говорим, что левая сторона выражения эквивалентна правой. Не правда ли, сразу понятнее выглядит синтаксис pattern matching?</p>
+<pre class="language-haskell"><code class="language-haskell"><span class="token hvariable">func</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>     <span class="token operator">=</span> <span class="token string">"nil"</span><br><span class="token hvariable">func</span> <span class="token punctuation">(</span><span class="token hvariable">x</span><span class="token operator">:</span><span class="token hvariable">xs</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token hvariable">x</span> <span class="token operator">++</span> <span class="token string">","</span> <span class="token operator">++</span> <span class="token hvariable">func</span> <span class="token hvariable">xs</span></code></pre>
+<p>Мы даём определение двум выражениям:</p>
+<ul>
+<li>функция <code>func</code> от пустого списка равна строке <code>&quot;nil&quot;</code>;</li>
+<li><code>func</code> от непустого списка равна сумме головы списка, запятой и функции <code>func</code> от хвоста списка.</li>
+</ul>
+<p>В эту же парадигму отлично ложится определение констант. Константа -- как бы функция &quot;от ничего&quot;, которая при любом <code>x</code> будет равна какому-то одному значению <code>y</code>. Приведу пример из отличной книжки <a href="http://learnyouahaskell.com">Learn you a Haskell for great good</a>:</p>
+<pre class="language-haskell"><code class="language-haskell"><span class="token hvariable">largestDivisible</span> <span class="token operator">::</span> <span class="token constant">Integer</span><br><span class="token hvariable">largestDivisible</span> <span class="token operator">=</span> <span class="token builtin">head</span> <span class="token punctuation">(</span><span class="token builtin">filter</span> <span class="token hvariable">p</span> <span class="token punctuation">[</span><span class="token number">100000</span><span class="token punctuation">,</span><span class="token number">99999</span><span class="token operator">..</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br>  <span class="token keyword">where</span> <span class="token hvariable">p</span> <span class="token hvariable">x</span> <span class="token operator">=</span> <span class="token hvariable">x</span> `<span class="token builtin">mod</span>` <span class="token number">3829</span> <span class="token operator">==</span> <span class="token number">0</span></code></pre>
+<p>Что здесь происходит? Функция <code>largestDivisible</code> не принимает никаких значений. Определён только её выходной тип -- <code>Integer</code>. Если вычислить выражение, которому равна функция, получится <code>99554</code>: самое большое число из диапазона от нуля до 100000, нацело делящееся на 3829. Вот этому значению и будет равно выражение <code>largestDivisible</code> в течение всего времени выполнения программы. Константа!</p>
+<p>В целом синтаксис языка больше похож на запись формул, уравнений, а не на язык программирования. <code>let ... in</code> и <code>where</code> чего только стоят. Это же классическое</p>
+<blockquote>
+<p>$E=mc^2$, где m -- масса тела, а c -- скорость света в вакууме.</p>
+</blockquote>
+<p>Учитывая сказанное, гарды (guards) можно воспринимать как систему уравнений с ограничениями. Сравните:</p>
+<pre class="language-haskell"><code class="language-haskell"><span class="token hvariable">isNegative</span> <span class="token hvariable">x</span><br>  <span class="token operator">|</span> <span class="token hvariable">x</span> <span class="token operator">&lt;</span> <span class="token number">0</span>     <span class="token operator">=</span> <span class="token string">"Negative"</span><br>  <span class="token operator">|</span> <span class="token hvariable">x</span> <span class="token operator">==</span> <span class="token number">0</span>    <span class="token operator">=</span> <span class="token string">"Zero"</span><br>  <span class="token operator">|</span> <span class="token builtin">otherwise</span> <span class="token operator">=</span> <span class="token string">"Positive"</span></code></pre>
+<blockquote>
+<p>$isNegative = \begin{cases}
+Negative, &amp; \text{если x &lt; 0} \\
+Zero, &amp; \text{если x = 0} \\
+Positive, &amp; \text{если x &gt; 0}
+\end{cases}$</p>
+</blockquote>
+<p>Очень похоже!</p>
+<p>Такой декларативный подход позволяет хаскеллю быть языком с ленивой моделью вычислений. Программист описывает не последовательность действий, а связи между сущностями. Детализируя их и их взаимодействия до нужной степени. А компилятор уже сам разбирается, когда что выполнять (и выполнять ли вообще). Собственно, работа компилятора заключается в том, чтобы максимально упростить вычисляемое выражение (программу). Если дальше упрощать некуда -- всё, программа завершена, результатом её работы является это самое максимально упрощённое выражение. Очень красиво с математической точки зрения.</p>
+<h3>Упрощение выражений (η-преобразование)</h3>
+<p>Поначалу код на хаскелле выглядит странно. Из кода функций совершенно непонятно, что они делают, даже если в коде нет &quot;страшных значков&quot; типа <code>&lt;$&gt;</code> или <code>&lt;*&gt;</code>. Вот вроде бы всё просто здесь, а всё равно неясно, куда девается String, объявленный в декларации функции:</p>
+<pre class="language-haskell"><code class="language-haskell"><span class="token hvariable">getBetweenColons</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token constant">String</span><br><span class="token hvariable">getBetweenColons</span> <span class="token operator">=</span> <br>  <span class="token keyword">let</span> <span class="token hvariable">beforeColon</span> <span class="token operator">=</span> <span class="token builtin">takeWhile</span> <span class="token punctuation">(</span><span class="token operator">/=</span> <span class="token char string">':'</span><span class="token punctuation">)</span><br>      <span class="token hvariable">afterColon</span>  <span class="token operator">=</span> <span class="token builtin">dropWhile</span> <span class="token punctuation">(</span><span class="token operator">/=</span> <span class="token char string">':'</span><span class="token punctuation">)</span><br>  <span class="token keyword">in</span> <span class="token builtin">init</span><span class="token operator"> . </span><span class="token hvariable">beforeColon</span><span class="token operator"> . </span><span class="token builtin">tail</span><span class="token operator"> . </span><span class="token hvariable">afterColon</span></code></pre>
+<p>Оказывается, всё просто. Считайте, что это приведение подобных членов, школьная алгебра. Если в левой части выражения стоит одинокий <code>x</code>, и в правой части тоже стоит одинокий <code>x</code>, их обоих можно выкинуть. Следующие две функции равноценны:</p>
+<pre class="language-haskell"><code class="language-haskell"><span class="token hvariable">getLinesWith</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token punctuation">[</span><span class="token constant">String</span><span class="token punctuation">]</span><br><span class="token hvariable">getLinesWith</span> <span class="token hvariable">t</span> <span class="token hvariable">c</span> <span class="token operator">=</span> <span class="token builtin">filter</span> <span class="token punctuation">(</span><span class="token hvariable">isSpecialLine</span> <span class="token hvariable">t</span><span class="token punctuation">)</span><span class="token operator"> . </span><span class="token builtin">lines</span> <span class="token operator">$</span> <span class="token hvariable">c</span><br><br><span class="token hvariable">getLinesWith</span> <span class="token operator">::</span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token constant">String</span> <span class="token operator">-></span> <span class="token punctuation">[</span><span class="token constant">String</span><span class="token punctuation">]</span><br><span class="token hvariable">getLinesWith</span> <span class="token hvariable">t</span> <span class="token operator">=</span> <span class="token builtin">filter</span> <span class="token punctuation">(</span><span class="token hvariable">isSpecialLine</span> <span class="token hvariable">t</span><span class="token punctuation">)</span><span class="token operator"> . </span><span class="token builtin">lines</span></code></pre>
+<p>Значение <code>c</code> мы можем выкинуть, т.к. внутри <code>getLinesWith</code> оно &quot;съедается&quot; в первую очередь -- функцией <code>lines</code>. А вот <code>t</code> выкинуть нельзя, потому что тогда компилятору будет непонятно, какое из двух значений куда скармливать.</p>
+<p>Теперь понятно, что в первом примере аргумент функции приходит сначала в <code>afterColon</code>, потом к получившемуся применяют <code>tail</code>, ну и так далее по цепочке, пока результат функции <code>init</code> не будет отдан наружу. А писать аргумент (ещё и именовать его! пфф) до знака равенства и после <code>afterColon</code> просто необязательно: компилятор сам догадается, что тут к чему. Удобно.</p>
+<blockquote>
+<p>За этой механикой стоит идея каррирования (частичного применения) функций. Ну и композиция оных, конечно: то самое <code>(f . g) x = f (g x)</code>. На самом деле, убирая аргумент из тела функции, мы создаём частично применённую функцию, которая ждёт свой единственный аргумент. Запись <code>z x = (f . g) x</code> равноценна записи <code>z = f . g</code>. Потому что в коде мы как раз применим <code>z</code> к недостающему аргументу, вызвав её как <code>z x</code>.</p>
+</blockquote>
+<blockquote>
+<p>Кстати, если пользоваться линтером (например, <a href="https://github.com/ndmitchell/hlint">HLint</a>), он будет сразу советовать такое упрощение (Eta-reduce).</p>
+</blockquote>
+<h3>Монады</h3>
+<p>Вот написал уже немного своих аналогий и пониманий, но прочитал последний пункт <a href="http://dev.stephendiehl.com/hask/#eightfold-path-to-monad-satori">этого списка</a> и осёкся. Правильно: единственный способ врубиться в эти штуки --</p>
+<ul>
+<li>Don't read the monad tutorials.</li>
+<li>No really, don't read the monad tutorials.</li>
+<li>Learn about <a href="http://book.realworldhaskell.org/read/types-and-functions.html">Haskell types</a>.</li>
+<li>Learn what a typeclass is.</li>
+<li>Read the <a href="http://wiki.haskell.org/Typeclassopedia">Typeclassopedia</a>.</li>
+<li>Read the monad definitions.</li>
+<li>Use monads in real code.</li>
+<li>Don't write monad-analogy tutorials.</li>
+</ul>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                ClojureScript setup на Windows
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                16/06/2020
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Несколько часов убил на то, чтобы разобраться, почему никак не хочет запускаться банальный hello world на ClojureScript. У немейнстримовых языков всегда слабо с тулингом и, следовательно, высокий порог вхождения. Вот на ровном месте спотыкаешься.</p>
+<p>Оказалось, под виндой <code>npx</code> надо вызывать как <code>npx.cmd</code>:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token operator">:compiler</span> <span class="token punctuation">{</span><span class="token operator">:main</span> choropleth.core<br>            <span class="token operator">:target</span> <span class="token operator">:bundle</span><br>            <span class="token operator">:asset-path</span> <span class="token string">"js/compiled/out"</span><br>            <span class="token operator">:output-to</span> <span class="token string">"resources/public/js/compiled/out/index.js"</span><br>            <span class="token operator">:output-dir</span> <span class="token string">"resources/public/js/compiled/out"</span><br>            <span class="token operator">:bundle-cmd</span> <span class="token punctuation">{</span><span class="token operator">:none</span> <span class="token punctuation">[</span><span class="token string">"npx.cmd"</span> <span class="token string">"webpack"</span> <span class="token string">"--mode=development"</span><span class="token punctuation">]</span><br>                        <span class="token operator">:default</span> <span class="token punctuation">[</span><span class="token string">"npx.cmd"</span> <span class="token string">"webpack"</span><span class="token punctuation">]</span><span class="token punctuation">}</span><br>            <span class="token operator">:source-map-timestamp</span> <span class="token boolean">true</span></code></pre>
+<p>Причём нигде на <a href="https://clojurescript.org">официальном сайте</a> про это не сказано. Сходил в github к автору figwheel-template, создал <a href="https://github.com/bhauman/figwheel-template/issues/46">issue</a>, чувак обрадовался и через пару дней прикрутил к инсталлятору &quot;поддержку винды&quot;. Теперь на винде <code>npx</code> будет вызываться как надо. Я сделал мир чуточку лучше. Ура! :)</p>
+<p>Масла в огонь подлила ещё и Intellij Idea, в которой я пытался этот helloworld запустить. Сообщения об ошибке крайне невразумительные. К счастью, через какое-то время я обратил внимание на ругань Leiningen в консоли, что он, дескать, почему-то не может <code>npx</code> этот запустить никак... Если бы не это, я бы ещё долго копал.</p>
+<p>Довольно забавен <a href="https://clojureverse.org/t/cljs-project-using-figwheel-on-windows/6079/9">комментарий</a> к этой проблеме (чуваку с такой же болячкой посоветовали поднять под виндой WSL и разрабатывать, по факту, под линухом): &quot;It’s amazing to me that the solution for developing on Windows becomes “install Linux”. I get why, but it does concern me&quot;.</p>
+<p>Да уж.</p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>

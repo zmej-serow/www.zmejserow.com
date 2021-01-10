@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Как выстрелить себе в ногу на Python-1
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                14/09/2019
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Никогда не пиши код типа такого:</p>
+<pre class="language-python"><code class="language-python">product_code <span class="token operator">=</span> xml<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><br>    <span class="token string">"/CIP4:JDF/CIP4:GeneralID/@IDValue"</span><span class="token punctuation">,</span><br>    namespaces<span class="token operator">=</span>ns<br><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span></code></pre>
+<p>Сэкономил две строчки, влепил сразу <code>[0]</code> после вызова функции, но <code>xml.path()</code> может вернуть <code>None</code>, и программа упадёт
+с <code>Index out of range error</code>.</p>
+<p>Антипаттерн, ети его.</p>
+<p>Пиши так:</p>
+<pre class="language-python"><code class="language-python">product_codes <span class="token operator">=</span> xml<span class="token punctuation">.</span>xpath<span class="token punctuation">(</span><br>    <span class="token string">"/CIP4:JDF/CIP4:GeneralID/@IDValue"</span><span class="token punctuation">,</span><br>    namespaces<span class="token operator">=</span>ns<br><span class="token punctuation">)</span><br><span class="token keyword">if</span> product_codes<span class="token punctuation">:</span><br>  product_code <span class="token operator">=</span> product_codes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span></code></pre>
+<p>Мало того, что здесь обходится проблема с <code>None</code>, тут ещё и чётко указывается, что именно отдаёт <code>xml.path()</code>. Отдаёт
+коды продуктов. Если таковые есть — получаем первый элемент списка. А то, что введена лишняя переменная — да и шут с
+ней, сборщик мусора приберёт. Зато код читается как текст даже спустя продолжительное время.</p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Разница между map и fmap в Haskell
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                10/11/2019
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Задался вопросом: зачем в хаскеле существует <code>map</code>, если есть <code>fmap</code>? <code>map</code> работает со списками, <code>fmap</code> -- с
+функторами. Но ведь список сам по себе есть функтор! Какова же фундаментальная разница между этими двумя функциями?<br>
+Оказывается, почти никакой, просто так исторически <a href="https://stackoverflow.com/a/6827776/9390914">сложилось</a>.</p>
+<p>В версии Haskell 1.3 <code>fmap</code> была переименована в <code>map</code> (логично), и её тип был обобщён для работы с функторами в целом,
+а не только со списками. Но в версии 1.4 разделение вернули. Посчитали, что новичкам, изучающим язык, будет сложнее
+понять сообщения об ошибках, в которых будут упоминаться функторы, а не списки. Так что <code>map</code> работает исключительно со
+списками, а <code>fmap</code>, более генерализованно, с любыми функторами.</p>
+<p>Так себе решение, если честно. С функторами в процессе изучения хаскелля так или иначе придётся столкнуться, причём довольно рано. Это основополагающая штука, в конце концов! Но зато теперь в языке есть <code>map</code> и <code>fmap</code>, а на StackOverflow есть соответствующий вопрос.</p>
+<p>А разгадка проста...</p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>

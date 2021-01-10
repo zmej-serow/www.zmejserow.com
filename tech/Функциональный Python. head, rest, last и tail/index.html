@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Функциональный Python. head, rest, last и tail
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                 7/04/2020
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Думаю, все помнят о бодром способе склейки словарей и распаковки списков:</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token string">'x'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">**</span><span class="token punctuation">{</span><span class="token string">'y'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">}</span><br><span class="token punctuation">{</span><span class="token string">'x'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'y'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">}</span><br><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br><span class="token number">1</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token number">3</span></code></pre>
+<p>А я сегодня случайно наткнулся на чудесный <a href="https://www.python.org/dev/peps/pep-3132">PEP-3132</a>. Он повествует о нетрадиционном применении оператора распаковки итераторов <code>*</code>.</p>
+<h3><strong>head</strong>:</h3>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> xs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> head<span class="token punctuation">,</span> <span class="token operator">*</span>rest <span class="token operator">=</span> xs<br><span class="token operator">>></span><span class="token operator">></span> head<br><span class="token number">1</span><br><span class="token operator">>></span><span class="token operator">></span> rest<br><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span></code></pre>
+<h3><strong>last</strong>:</h3>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> xs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> <span class="token operator">*</span>rest<span class="token punctuation">,</span> last <span class="token operator">=</span> xs<br><span class="token operator">>></span><span class="token operator">></span> last<br><span class="token number">5</span><br><span class="token operator">>></span><span class="token operator">></span> rest<br><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span></code></pre>
+<p>Никто не запрещает взять голову и хвост списка одновременно:</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> xs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> head<span class="token punctuation">,</span> <span class="token operator">*</span>rest<span class="token punctuation">,</span> last <span class="token operator">=</span> xs<br><span class="token operator">>></span><span class="token operator">></span> head<br><span class="token number">1</span><br><span class="token operator">>></span><span class="token operator">></span> rest<br><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> last<br><span class="token number">5</span></code></pre>
+<p>Если <code>*rest</code> не нужен -- можно совершенно спокойно заменить его на <code>*_</code>. Хотя мне такое уже не нравится, какой-то <em>perl</em> выходит. :)</p>
+<p>И даже вот так можно:</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> xs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> first<span class="token punctuation">,</span> second<span class="token punctuation">,</span> <span class="token operator">*</span>rest<span class="token punctuation">,</span> pre_last<span class="token punctuation">,</span> last <span class="token operator">=</span> xs<br><span class="token operator">>></span><span class="token operator">></span> first<br><span class="token number">1</span><br><span class="token operator">>></span><span class="token operator">></span> second<br><span class="token number">2</span><br><span class="token operator">>></span><span class="token operator">></span> rest<br><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> pre_last<br><span class="token number">5</span><br><span class="token operator">>></span><span class="token operator">></span> last<br><span class="token number">6</span></code></pre>
+<p>Единственная проблема в том, что нужно быть 100% уверенным в содержимом списка: сколько в нём элементов и какие элементы где возможны.</p>
+<p>В случае, когда количество распаковываемых элементов совпадает с длиной распаковываемого списка, в <code>*rest</code> приедет пустой список. Отличить это поведение от штатной обработки списка типа <code>[1, [], 2]</code> невозможно:</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> xs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> first<span class="token punctuation">,</span> <span class="token operator">*</span>rest<span class="token punctuation">,</span> last <span class="token operator">=</span> xs<br><span class="token operator">>></span><span class="token operator">></span> first<br><span class="token number">1</span><br><span class="token operator">>></span><span class="token operator">></span> last<br><span class="token number">2</span><br><span class="token operator">>></span><span class="token operator">></span> rest<br><span class="token punctuation">[</span><span class="token punctuation">]</span></code></pre>
+<p>В случае, когда список короче желаемого, разумеется, будет вылетать исключение:</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> xs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><br><span class="token operator">>></span><span class="token operator">></span> a<span class="token punctuation">,</span> <span class="token operator">*</span>b<span class="token punctuation">,</span> c<span class="token punctuation">,</span> d <span class="token operator">=</span> xs<br>Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span><br>  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span><br>ValueError<span class="token punctuation">:</span> <span class="token keyword">not</span> enough values to unpack <span class="token punctuation">(</span>expected at least <span class="token number">3</span><span class="token punctuation">,</span> got <span class="token number">2</span><span class="token punctuation">)</span></code></pre>
+<p>Такая вот красота. По-моему, такой способ записи в некоторых случаях может выглядеть намного нагляднее стандартного
+питоньего <code>xs[0]</code> для головы списка, <code>xs[1:]</code> для хвоста и так далее.</p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>

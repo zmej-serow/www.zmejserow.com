@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Функциональный Python. Не надо
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                23/03/2020
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Есть словарь. Ключи в нём -- пути к файлам, а значения -- списки строк. Строки эти я получаю из некоего API, и они содержат подробные текстовые описания встретившихся в процессе работы над файлом проблем. По одной строке на проблему. Например:</p>
+<pre class="language-python"><code class="language-python"><span class="token punctuation">{</span><br>  <span class="token string">'file://a/b/c/d.txt'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><br>    <span class="token string">'cluster0.engine1.check9: a problem is here: too long preface'</span><span class="token punctuation">,</span><br>    <span class="token string">'cluster0.engine1.check2: absence of very useful thing'</span><span class="token punctuation">,</span><br>    <span class="token string">'cluster0.engine2.fixed8: fixed presence of jabberwocky'</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token string">'file://a/b/c/x.txt'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><br>    <span class="token string">'cluster0.engine3.check4: oh, very boring error found'</span><span class="token punctuation">,</span><br>    <span class="token string">'cluster0.engine2.check2: absence of very useful thing'</span><br>    <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+<p>Задача -- определить наличие каждой ошибки и зарегистрировать её в базе данных. В общем-то, задача в этом виде сводится к поиску подстроки, идентифицирующей ошибку, в строках из списка с ошибками. Можно многое оптимизировать, но я бы хотел остановиться именно на таком варианте задачи. Он очень иллюстративен. Исходники &quot;для поиграться&quot; можно взять на <a href="https://github.com/zmej-serow/imperative_vs_functional_python">гитхабе</a>.</p>
+<h3>Императивный подход</h3>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">loop</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> list_of_errors<span class="token punctuation">)</span><span class="token punctuation">:</span><br>    <span class="token keyword">for</span> error_message <span class="token keyword">in</span> list_of_errors<span class="token punctuation">:</span><br>        <span class="token keyword">if</span> error <span class="token keyword">in</span> error_message<span class="token punctuation">:</span><br>            <span class="token keyword">return</span> <span class="token boolean">True</span><br>    <span class="token keyword">return</span> <span class="token boolean">False</span></code></pre>
+<p>Максимально тупо и просто: на входе искомая подстрока и список строк с ошибками. Перебираем строки, если подстрока есть в строке -- ошибка найдена, возвращаем <code>True</code>. В конце концов, если не нашли -- возвращаем <code>False</code>.</p>
+<p>Работает, но выглядит как-то некрасиво. Читать сложно, угол этот дурацкий... Попробуем иначе!</p>
+<h3>Функциональный подход (ленивый)</h3>
+<p>Ну насколько ленивый... Насколько ленивы питоньи генераторы.</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">any_gen</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> list_of_errors<span class="token punctuation">)</span><span class="token punctuation">:</span><br>    <span class="token keyword">return</span> <span class="token builtin">any</span><span class="token punctuation">(</span><br>      <span class="token boolean">True</span> <span class="token keyword">if</span> error <span class="token keyword">in</span> error_message <span class="token keyword">else</span> <span class="token boolean">False</span><br>      <span class="token keyword">for</span> error_message <span class="token keyword">in</span> list_of_errors<br>    <span class="token punctuation">)</span></code></pre>
+<p>Логика простая: создаётся генератор, отдающий <code>True</code> или <code>False</code> в зависимости от того, встретилась искомая подстрока в строке или нет. И к этому генератору применяется функция <code>any</code>. По факту, она распихивает между переданными ей параметрами логическое <code>OR</code> и отдаёт результат. Так что если хоть одно совпадение было, мы получим <code>True</code>. Код красивый, отлично читается, никаких &quot;углов&quot;. Просто блок логики.</p>
+<h3>Функциональный подход (энергичный)</h3>
+<p>А тут мы просто генератор заменим на список. Пусть он все параметры для <code>any</code> вычислит сразу:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">any_list</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> list_of_errors<span class="token punctuation">)</span><span class="token punctuation">:</span><br>    <span class="token keyword">return</span> <span class="token builtin">any</span><span class="token punctuation">(</span><span class="token punctuation">[</span><br>      <span class="token boolean">True</span> <span class="token keyword">if</span> error <span class="token keyword">in</span> x <span class="token keyword">else</span> <span class="token boolean">False</span><br>      <span class="token keyword">for</span> x <span class="token keyword">in</span> list_of_errors<br>    <span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<h3>Функциональный подход (свёртка)</h3>
+<pre class="language-python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> <span class="token builtin">reduce</span><br><span class="token keyword">def</span> <span class="token function">foldl</span><span class="token punctuation">(</span>error<span class="token punctuation">,</span> list_of_errors<span class="token punctuation">)</span><span class="token punctuation">:</span><br>    <span class="token keyword">return</span> <span class="token builtin">reduce</span><span class="token punctuation">(</span><br>      <span class="token keyword">lambda</span> prev_status<span class="token punctuation">,</span> error_message<span class="token punctuation">:</span> prev_status <span class="token keyword">or</span> error <span class="token keyword">in</span> error_message<span class="token punctuation">,</span><br>      list_of_errors<span class="token punctuation">,</span><br>      <span class="token boolean">False</span><br>    <span class="token punctuation">)</span></code></pre>
+<p>Вот тут уже интереснее. <code>reduce</code> выполняет левую свёртку над списком, принимая в качестве исходного значения <code>False</code>. Сворачивающая функция вернёт <code>True</code> только если искомая подстрока будет найдена в строке (выражение <code>error in error_message</code> истинно). Если такое случится -- результатом выполнения <code>reduce</code> будет <code>True</code>. Если нет -- будет возвращено исходное <code>False</code>. Выглядит красиво, но есть проблемка -- не все понимают, как работает <code>reduce</code>.</p>
+<p>А теперь посмотрим, насколько быстро вся эта красота работает. Я беру в качестве исходных данных сто разных слов из
+какого-то wordlist'а и формирую из них случайным образом список строк, в котором буду искать сочетание <code>the</code>:</p>
+<pre class="language-python"><code class="language-python">test <span class="token operator">=</span> words<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><br>random_index_of_list <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">:</span> random<span class="token punctuation">.</span>randrange<span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><br>list_items <span class="token operator">=</span> <span class="token number">20</span><br>test_list_length <span class="token operator">=</span> <span class="token number">100</span><br>test_list <span class="token operator">=</span> <span class="token punctuation">[</span><br>  <span class="token punctuation">[</span><br>    test<span class="token punctuation">[</span>random_index_of_list<span class="token punctuation">(</span>test<span class="token punctuation">)</span><span class="token punctuation">]</span><br>    <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>list_items<span class="token punctuation">)</span><br>  <span class="token punctuation">]</span><br>  <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>test_list_length<span class="token punctuation">)</span><br><span class="token punctuation">]</span><br>substring <span class="token operator">=</span> <span class="token string">'the'</span></code></pre>
+<p>Скорость будем измерять стандартным способом: <code>timeit</code>.</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'reduce\t'</span><span class="token punctuation">,</span> timeit<span class="token punctuation">.</span>timeit<span class="token punctuation">(</span><br>    <span class="token string">'[foldl(substring, i) for i in test_list]'</span><span class="token punctuation">,</span><br>    setup<span class="token operator">=</span><span class="token string">'from __main__ import test_list, substring, foldl'</span><span class="token punctuation">,</span><br>    number<span class="token operator">=</span><span class="token number">10000</span><br><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'any_gen\t'</span><span class="token punctuation">,</span> timeit<span class="token punctuation">.</span>timeit<span class="token punctuation">(</span><br>    <span class="token string">'[any_gen(substring, i) for i in test_list]'</span><span class="token punctuation">,</span><br>    setup<span class="token operator">=</span><span class="token string">'from __main__ import test_list, substring, any_gen'</span><span class="token punctuation">,</span><br>    number<span class="token operator">=</span><span class="token number">10000</span><br><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'any_lst\t'</span><span class="token punctuation">,</span> timeit<span class="token punctuation">.</span>timeit<span class="token punctuation">(</span><br>    <span class="token string">'[any_list(substring, i) for i in test_list]'</span><span class="token punctuation">,</span><br>    setup<span class="token operator">=</span><span class="token string">'from __main__ import test_list, substring, any_list'</span><span class="token punctuation">,</span><br>    number<span class="token operator">=</span><span class="token number">10000</span><br><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'loop\t'</span><span class="token punctuation">,</span> timeit<span class="token punctuation">.</span>timeit<span class="token punctuation">(</span><br>    <span class="token string">'[loop(substring, i) for i in test_list]'</span><span class="token punctuation">,</span><br>    setup<span class="token operator">=</span><span class="token string">'from __main__ import test_list, substring, loop'</span><span class="token punctuation">,</span><br>    number<span class="token operator">=</span><span class="token number">10000</span><br><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Результат вполне предсказуем для императивного языка: простой цикл выигрывает с ощутимым отрывом.</p>
+<pre><code>reduce	 4.6457402000000005
+any_gen	 3.540921899999999
+any_lst	 3.1851106
+loop	   1.8013910000000006
+</code></pre>
+<h3>Почему так?</h3>
+<h5>Дорогие функции в питоне</h5>
+<p>Вызов функции -- штука недешёвая. Нужно создать контекст выполнения, переключиться в него, передать параметры, получить их назад. Именно этим занимается вариант <code>foldl()</code>. На каждый элемент списка! Поэтому так долго.</p>
+<h5>Генераторы &quot;дешевле&quot; функций</h5>
+<p>По сравнению с вызовом функции для каждого элемента списка, генератор экономит на контексте. Однажды создав контекст, генератор возвращается к нему посчитать и выдать результат командой <code>yield</code>.</p>
+<h5>Списки жрут память</h5>
+<p>Результат не будет вычислен до тех пор, пока в памяти не построится весь список. Если обрабатываемые данные -- это 5 списков по 1000 элементов в каждом, генераторный вариант оказывается в 6 раз быстрее списочного за счёт лени: вычисление прерывается после первого совпадения (когда генератор вернёт <code>True</code>). Однако, на других данных списки могут оказаться быстрее: например, если на вход дать тысячу списков длиной по 5 элементов каждый. Сказывается оверхед на переключении контекстов между генератором и основным контекстом программы.</p>
+<h5>Наконец, императивный вариант</h5>
+<p>Лучше всего ложится на архитектуру языка. Питонья виртуальная машина тупо выполняет байткод без переключений между контекстами до тех пор, пока не обнаружит совпадение или не доберётся до конца списка.</p>
+<h3>Как жить дальше</h3>
+<p>В преимущественно императивном языке, по-моему, нужно пользоваться именно императивным подходом. Заигрывания с функциональной парадигмой без хорошей поддержки со стороны языка имеют неудовлетворительную производительность.</p>
+<p>В случае питона можно пользоваться вариантами с функциями типа <code>sum</code>, <code>any</code>, <code>all</code> -- они хорошо читаются, структура программы чётче. Но боже упаси тащить в продакшн чисто функциональные штуки вроде <a href="https://pypi.org/project/PyMonad/">монад</a> или <a href="https://pypi.org/project/patternmatching/">паттерн-матчинга</a>. Даже если они существенно упрощают код. Потому что, во-первых, его будет тяжело поддерживать и читать, а во-вторых... Если без этих штук действительно тяжело -- почему бы не попробовать писать уже на нормальном функциональном языке?</p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>

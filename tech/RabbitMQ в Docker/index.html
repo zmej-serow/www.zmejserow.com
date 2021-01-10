@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/www.zmejserow.com/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/www.zmejserow.com/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                RabbitMQ в Docker
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                 5/09/2020
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Заметил (к счастью, до релиза в продакшн), что из очереди RabbitMQ пропадают сообщения, начисто, если убить контейнер и создать его снова. Почему -- непонятно: очередь durable, сообщения persistent. В конфиге docker-compose всё прописано как надо, очередь живёт на внешнем томе:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">volumes</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> queues<span class="token punctuation">:</span>/var/lib/rabbitmq/mnesia</code></pre>
+<p>Загадка...</p>
+<p><a href="https://github.com/dockerfile/rabbitmq/issues/22">Оказалось</a>, что имя базы mnesia зависит от имени хоста, на котором крутится RabbitMQ. Как только я пересоздаю контейнер, имя хоста меняется, Rabbit ищет базу, не находит, создаёт новую. Вот так всё просто... Одно из решений -- задать RabbitMQ перманентное имя хоста, например, через переменную окружения в том же docker-compose.yaml (<code>rabbit</code> -- это название контейнера):</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">environment</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> RABBITMQ_NODENAME=project_queue@rabbit</code></pre>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>
