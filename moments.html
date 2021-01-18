@@ -5,6 +5,8 @@ eleventyExcludeFromCollections: true
 {% assign var currentMonth = 0 %}
 {% assign var currentYear = 0 %}
 
-{% for post in collections.moments reversed %}
-    {% include record %}
-{% endfor %}
+<div class="columns is-multiline">
+    {% for post in collections.moments reversed %}
+        {% include moments %}
+    {% endfor %}
+</div>
