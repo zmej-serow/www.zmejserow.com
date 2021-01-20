@@ -1,0 +1,19 @@
+{% for preview_filename in collections.moments_images %}
+    {% if preview_filename contains post.fileSlug %}
+        {% assign format = preview_filename | split: "." | last %}
+    {% endif %}
+{% endfor %}
+
+<div class="column is-one-third">
+    <a href="{{ post.url }}">
+        <div class="card">
+            <div class="card-image">
+                <img src="{{ post.url }}/preview.{{ format }}">
+            </div>
+            <div class="card-content">
+                {{ post.data.pageTitle }}
+                <span class="is-size-7 has-text-grey-light ml-3">{{ post.date | date: "%Y, %e %b" }}</span>
+            </div>
+        </div>
+    </a>
+</div>
