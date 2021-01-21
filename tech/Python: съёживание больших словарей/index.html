@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Python: съёживание больших словарей
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                21/01/2021
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Всем известна табличка сложности операций над словарями в питоне:</p>
+<table>
+<thead>
+<tr>
+<th>Операция</th>
+<th>Средняя сложность</th>
+<th>Худший вариант</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>get</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>set</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>iterate</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<p>Оказалось, что <code>n</code> в этой таблице — вовсе не текущий размер словаря, а тот размер, до которого словарь когда-либо
+дорастал в своей жизни.</p>
+<p>Вот у вас был словарик в 20 элементов, <code>n = 20</code>. Вы в него прочитали что-то большое из базы данных, например; словарик
+потолстел до 2000 элементов. <code>n = 2000</code>. Так вот если сейчас провести удаление 1880 элементов из словаря, его <code>n</code> всё
+равно будет равно двум тысячам, и итерирование по нему будет происходить очень медленно.</p>
+<p>Что делать? В таких случаях стоит <strong>создавать новый словарь</strong> вместо удаления элементов из старого. Так победим!
+<em>(что-то невнятно пробурчал про иммутабельность и умолк)</em></p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>
