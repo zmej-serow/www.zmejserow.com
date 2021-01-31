@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Необычное применение генераторов в Python
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                31/01/2021
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Обычно питоньи генераторы используются, чтобы отдавать значения из контейнеров-итераторов порционно, лениво, по мере
+необходимости. Штука полезная, можно соорудить, например, бесконечные последовательности, как в Haskell:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">odds</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><br>    x <span class="token operator">=</span> <span class="token number">1</span><br>    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span><br>        <span class="token keyword">yield</span> x<br>        x <span class="token operator">+=</span> <span class="token number">2</span></code></pre>
+<p>Можно просто экономить память, подтягивая значения из генератора по одному, не выделяя память сразу под все элементы
+списка. Вы и так всё это знаете. А вот знакома ли такая конструкция? Я не сразу понял, как это должно работать и почему:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">check_direction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><br>    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'where do you want to go today? (c)'</span><span class="token punctuation">)</span><br>    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span><br>        direction <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">yield</span><span class="token punctuation">)</span><br>        <span class="token keyword">if</span> direction<span class="token punctuation">:</span><br>            <span class="token keyword">if</span> <span class="token string">'left'</span> <span class="token keyword">in</span> direction<span class="token punctuation">:</span><br>                <span class="token keyword">yield</span> <span class="token string">'whoa, turning left'</span><br>            <span class="token keyword">if</span> <span class="token string">'right'</span> <span class="token keyword">in</span> direction<span class="token punctuation">:</span><br>                <span class="token keyword">yield</span> <span class="token string">'right turn!'</span><br>            <span class="token keyword">if</span> <span class="token string">'up'</span> <span class="token keyword">in</span> direction<span class="token punctuation">:</span><br>                <span class="token keyword">yield</span> <span class="token string">'higher and higher!'</span><br>            <span class="token keyword">if</span> <span class="token string">'down'</span> <span class="token keyword">in</span> direction<span class="token punctuation">:</span><br>                <span class="token keyword">yield</span> <span class="token string">'do not trip!'</span></code></pre>
+<p>Оказывается, в таком виде <code>yield</code> работает как выражение, а не как оператор, и протаскивает в отложенный контекст
+значение, которое ему передают через метод <code>send</code>, которым <code>check_direction</code>, будучи генератором, обзаводится
+автоматически.</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> check_direction<span class="token punctuation">.</span>__dir__<span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token punctuation">[</span><span class="token string">'throw'</span><span class="token punctuation">,</span> <span class="token string">'__dir__'</span><span class="token punctuation">,</span> <span class="token string">'__format__'</span><span class="token punctuation">,</span> <span class="token string">'__new__'</span><span class="token punctuation">,</span> <span class="token string">'__sizeof__'</span><span class="token punctuation">,</span> <span class="token string">'__str__'</span><span class="token punctuation">,</span> <span class="token string">'__eq__'</span><span class="token punctuation">,</span> <span class="token string">'send'</span><span class="token punctuation">,</span> <span class="token string">'__repr__'</span><span class="token punctuation">,</span> <span class="token string">'__next__'</span><span class="token punctuation">,</span> <br><span class="token string">'__init__'</span><span class="token punctuation">,</span> <span class="token string">'gi_yieldfrom'</span><span class="token punctuation">,</span> <span class="token string">'__ge__'</span><span class="token punctuation">,</span> <span class="token string">'__lt__'</span><span class="token punctuation">,</span> <span class="token string">'__qualname__'</span><span class="token punctuation">,</span> <span class="token string">'__iter__'</span><span class="token punctuation">,</span> <span class="token string">'__delattr__'</span><span class="token punctuation">,</span> <span class="token string">'__class__'</span><span class="token punctuation">,</span> <span class="token string">'__reduce_ex__'</span><span class="token punctuation">,</span> <br><span class="token string">'gi_code'</span><span class="token punctuation">,</span> <span class="token string">'__subclasshook__'</span><span class="token punctuation">,</span> <span class="token string">'__setattr__'</span><span class="token punctuation">,</span> <span class="token string">'__getattribute__'</span><span class="token punctuation">,</span> <span class="token string">'__name__'</span><span class="token punctuation">,</span> <span class="token string">'close'</span><span class="token punctuation">,</span> <span class="token string">'__hash__'</span><span class="token punctuation">,</span> <span class="token string">'gi_frame'</span><span class="token punctuation">,</span> <span class="token string">'__gt__'</span><span class="token punctuation">,</span> <br><span class="token string">'__ne__'</span><span class="token punctuation">,</span> <span class="token string">'__del__'</span><span class="token punctuation">,</span> <span class="token string">'gi_running'</span><span class="token punctuation">,</span> <span class="token string">'__doc__'</span><span class="token punctuation">,</span> <span class="token string">'__le__'</span><span class="token punctuation">,</span> <span class="token string">'__reduce__'</span><span class="token punctuation">]</span></code></pre>
+<p>Звучит слегка запутанно, но вот как это работает:</p>
+<pre class="language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> x <span class="token operator">=</span> check_direction<span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">next</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><br>where do you want to go today? <span class="token punctuation">(</span>c<span class="token punctuation">)</span><br><span class="token operator">>></span><span class="token operator">></span> x<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'going right'</span><span class="token punctuation">)</span><br>right turn!<br><span class="token operator">>></span><span class="token operator">></span> x<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">'looking up'</span><span class="token punctuation">)</span><br>higher <span class="token keyword">and</span> higher!</code></pre>
+<p>Функция <code>next</code> здесь инициализирует генератор, а <code>send</code> передаёт в <code>direction</code> значение. Отличный способ запутать коллег
+и сделать код совершенно нечитаемым! :)</p>
+<p>А чтобы прекратить это безобразие, у генератора есть ещё два метода, <code>throw</code> и <code>close</code>. Первый принимает исключение и
+заставляет генератор его бросить, а второй просто завершает работу штатным исключением <code>GeneratorExit</code>. Забавно, что
+если попробовать отловить исключения в <code>try / catch</code> и попытаться в <code>catch</code> что-нибудь выдать наружу (<code>yield</code>), питон
+рухнет с <code>RuntimeError</code>. Логично, генератора-то уже нет.</p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>
