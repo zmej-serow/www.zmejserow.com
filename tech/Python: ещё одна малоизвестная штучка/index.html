@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Python: ещё одна малоизвестная штучка
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                 4/02/2021
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Существует чудесный <a href="https://www.python.org/dev/peps/pep-3102/">PEP3102</a>, который, в общем-то, никаких новых механик в
+язык не привносит, но позволяет добавить порядку в код. Его название — keyword-only arguments — может слегка сбить с
+толку, но сейчас всё станет понятно.</p>
+<p>Взгляните на сигнатуру этой функции. Неважно, что именно она делает, главное, что у неё есть порядковые аргументы и
+именованные:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">upload_to_s3</span><span class="token punctuation">(</span>bucket<span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token punctuation">,</span> encrypt<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span></code></pre>
+<p>Вроде всё хорошо. Но есть один момент. Оба этих варианта вызова функции равнозначны и дозволены:</p>
+<pre class="language-python"><code class="language-python">upload_to_s3<span class="token punctuation">(</span>bucket<span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">)</span><br>upload_to_s3<span class="token punctuation">(</span>bucket<span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token punctuation">,</span> encrypt<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
+<p>Хорошо ли это? Пока вы помните, какой именно именованный аргумент скрывается за безличным <code>True</code> — да. В маленьких
+скриптах, в небольших программках это совершенно легитимно. Если вам не лень смотреть каждый раз на сигнатуру функции,
+пользуясь подсказкой IDE, или переходить к её определению — тоже всё ок. Но ведь лень же, да? Лень.</p>
+<p>Через некоторое время функция может получить ещё один именованный параметр. Например, так:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">upload_to_s3</span><span class="token punctuation">(</span>bucket<span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token punctuation">,</span> duplicate_to_glacier<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">,</span> encrypt<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span></code></pre>
+<p>И всё. Проблема даже не в том, что нужно ходить к сигнатуре, чтобы вспомнить, какой аргумент за что отвечает. Проблема
+гораздо серьёзней: если вы или кто-то другой добавляет ещё один именованный аргумент <em>до</em> тех, что уже существуют,
+логика сломается. Везде, где функция вызывается без именованных аргументов. Теперь вызов <code>upload_to_s3(bucket, file,  True)</code> будет означать не «зашифровать файл в S3», а «дублировать файл в Glacier».</p>
+<p>Чтобы полностью убрать возможность таких ошибок, нужно добавить звёздочку перед именованными аргументами в сигнатуре:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">upload_to_s3</span><span class="token punctuation">(</span>bucket<span class="token punctuation">,</span> <span class="token builtin">file</span><span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">,</span> encrypt<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span></code></pre>
+<p>Теперь попытка вызвать функцию неправильно бросит исключение <code>TypeError</code>:</p>
+<pre class="language-python"><code class="language-python">TypeError<span class="token punctuation">:</span> upload_to_s3<span class="token punctuation">(</span><span class="token punctuation">)</span> takes <span class="token number">2</span> positional arguments but <span class="token number">3</span> were given</code></pre>
+<p>Перечислю убитых зайцев:</p>
+<ul>
+<li>не нужно держать в памяти смысл аргументов, вы их обязаны указывать явно;</li>
+<li>не нужно держать в голове, что аргументы добавлять нужно только в конец сигнатуры («защита от джунов»);</li>
+<li>код становится более читабельным.</li>
+</ul>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>
