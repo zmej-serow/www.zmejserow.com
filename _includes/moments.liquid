@@ -1,5 +1,5 @@
 {% for preview_filename in collections.moments_images %}
-    {% if preview_filename contains post.fileSlug %}
+    {% if preview_filename contains post.data.pageTitle %}
         {% assign format = preview_filename | split: "." | last %}
     {% endif %}
 {% endfor %}
