@@ -8,3 +8,7 @@ stabilize:
 	ffmpeg -i '${i}' -vf vidstabtransform,unsharp=5:5:0.8:3:3:0.4 'stab-${i}'
 	rm dummy.mp4
 	rm transforms.trf
+
+resize:
+	mogrify -quality 70 -resize 1800\> '${i}'
+
