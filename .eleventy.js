@@ -6,6 +6,7 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addPassthroughCopy('**/*.jpg');
     eleventyConfig.addPassthroughCopy('**/*.png');
     eleventyConfig.addPassthroughCopy('**/*.mp4');
+    eleventyConfig.addPassthroughCopy('**/*.mp3');
     eleventyConfig.addPassthroughCopy('css/*');
     eleventyConfig.addPassthroughCopy('CNAME');
     eleventyConfig.addPlugin(syntaxHighlight);
