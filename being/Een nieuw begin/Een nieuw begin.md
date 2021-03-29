@@ -1,6 +1,6 @@
 ---
 date: 2021-03-26
-pageTitle: Een nieuw begin!
+pageTitle: Een nieuw begin
 ---
 
 ![](roubaix_pro.jpg)
