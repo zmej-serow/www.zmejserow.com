@@ -3,6 +3,7 @@ const fg = require('fast-glob');
 
 module.exports = function(eleventyConfig) {
     eleventyConfig.addCollection('moments_images', _ => fg.sync(['moments/**/*.png', 'moments/**/*.jpg']));
+    eleventyConfig.addCollection('recentposts', collection => collection.getAllSorted().reverse().slice(0, 10))
     eleventyConfig.addPassthroughCopy('**/*.jpg');
     eleventyConfig.addPassthroughCopy('**/*.png');
     eleventyConfig.addPassthroughCopy('**/*.mp4');
