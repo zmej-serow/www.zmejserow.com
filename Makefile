@@ -1,3 +1,4 @@
+# make push m="название коммита"
 push:
 	git add .
 	git commit -m '${m}'
@@ -9,6 +10,7 @@ stabilize:
 	rm dummy.mp4
 	rm transforms.trf
 
+# make resize i="walks/brevet-200-nis/*jpg"
 resize:
 	mogrify -quality 70 -resize 1800\> '${i}'
 
