@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Почти контрактное программирование в Clojure
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                21/11/2021
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Наконец собрался покурить современные лиспы. Кандидат номер один — <strong>Clojure</strong>, разумеется: JVM, синтаксис не из каменного века, транзакционная модель памяти, язык активно развивается прямо сейчас, мощное коммьюнити и приличное количество мануалов/бойлерплейтов на все случаи жизни.</p>
+<p>Пока идёт хорошо, прям с удовольствием щёлкаю задачки на <a href="https://www.exercism.org">Exercism</a>. Простенькие, пока привыкаю к синтаксису и возможностям: не так-то просто заставить себя думать иначе после стольких лет питона. И да, скобочки вовсе не страшны, их количество ровно такое же, как в обычных языках. :)</p>
+<p>Постоянно всплывают всякие классные особенности языка. Вот прям хочется поделиться одной такой штукой: это уже почти контрактное программирование.</p>
+<p>Предположим, у меня есть функция, которая увеличивает число на единицу:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">defn</span> increase-by-one <span class="token punctuation">[</span>x<span class="token punctuation">]</span><br>    <span class="token punctuation">(</span><span class="token keyword">inc</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Но я хочу работать только с числами, большими нуля. Как можно это сделать? Ну вот так, например, по-питоньи, привычно. Проверяем на условие и возвращаем ошибку, если неалё:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">defn</span> increase-by-one <span class="token punctuation">[</span>x<span class="token punctuation">]</span><br>    <span class="token punctuation">(</span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">pos?</span> x<span class="token punctuation">)</span><br>        <span class="token punctuation">(</span><span class="token keyword">inc</span> x<span class="token punctuation">)</span><br>        <span class="token operator">:error</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>А что, если ограничений много? Пилить колбасу из <code>and</code>? Как-то некрасиво. Поэтому в <strong>Clojure</strong> придумали <code>pre</code> и <code>post</code> констрейны. Они задаются в метаданных функции (тоже классная штука, но про неё отдельно рассказывать надо), и в них прописываются предикаты. Если входной параметр (для <code>pre</code>) или результат функции (для <code>post</code>) не удовлетворяет хотя бы одному предикату — будет брошено исключение <code>AssertionError</code>.</p>
+<p>Выглядит это так:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">defn</span> increase-by-one <span class="token punctuation">[</span>x<span class="token punctuation">]</span><br>    <span class="token punctuation">{</span><span class="token operator">:pre</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">pos?</span> x<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">}</span><br>    <span class="token punctuation">(</span><span class="token keyword">inc</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Вот более приближенный к жизни пример: получить <em>i</em>-тый элемент из списка. Логично, что <em>i</em> не может быть больше, чем длина списка, и <em>i</em> не может быть отрицательным:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">defn</span> get-item <span class="token punctuation">[</span>lst <span class="token keyword">index</span><span class="token punctuation">]</span><br>    <span class="token punctuation">{</span><span class="token operator">:pre</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">&lt;</span> <span class="token keyword">index</span> <span class="token punctuation">(</span><span class="token keyword">count</span> lst<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">&lt;=</span> <span class="token number">0</span> <span class="token keyword">index</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">}</span><br>    <span class="token punctuation">(</span><span class="token keyword">nth</span> lst <span class="token keyword">index</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><br>user=<span class="token keyword">></span> <span class="token punctuation">(</span>get-item <span class="token punctuation">[</span><span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token number">1</span><span class="token punctuation">)</span><br><span class="token number">2</span><br>user=<span class="token keyword">></span> <span class="token punctuation">(</span>get-item <span class="token punctuation">[</span><span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token number">0</span><span class="token punctuation">)</span><br><span class="token number">1</span><br>user=<span class="token keyword">></span> <span class="token punctuation">(</span>get-item <span class="token punctuation">[</span><span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span> <span class="token number">9</span><span class="token punctuation">)</span><br>Execution error <span class="token punctuation">(</span>AssertionError<span class="token punctuation">)</span> at user/get-item <span class="token punctuation">(</span>REPL:<span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">.</span><br>Assert failed: <span class="token punctuation">(</span><span class="token keyword">&lt;</span> <span class="token keyword">index</span> <span class="token punctuation">(</span><span class="token keyword">count</span> lst<span class="token punctuation">)</span><span class="token punctuation">)</span><br>user=<span class="token keyword">></span> <span class="token punctuation">(</span>get-item <span class="token punctuation">[</span><span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span> -<span class="token number">1</span><span class="token punctuation">)</span><br>Execution error <span class="token punctuation">(</span>AssertionError<span class="token punctuation">)</span> at user/get-item <span class="token punctuation">(</span>REPL:<span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">.</span><br>Assert failed: <span class="token punctuation">(</span><span class="token keyword">&lt;=</span> <span class="token number">0</span> <span class="token keyword">index</span><span class="token punctuation">)</span></code></pre>
+<p>Так как <strong>Clojure</strong> — полноценный функциональный язык, функции в нём суть first-class citizens и их можно передавать как параметры в другие функции. Это открывает возможность комбинировать их друг с другом, создавая цепочки из функций, одна из которых (или несколько!) может быть таким вот валидатором:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">defn</span> time-linearity-checked <span class="token punctuation">[</span><span class="token number">f</span> start end<span class="token punctuation">]</span><br>    <span class="token string">"Время линейно: проверяем, что start задан не позже end"</span><br>    <span class="token punctuation">{</span><span class="token operator">:pre</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">&lt;</span> start end<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">}</span><br>    <span class="token punctuation">(</span><span class="token number">f</span> start end<span class="token punctuation">)</span><span class="token punctuation">)</span><br><br>user=<span class="token keyword">></span> <span class="token punctuation">(</span>time-linearity-checked <span class="token keyword">println</span> <span class="token number">36</span> <span class="token number">42</span><span class="token punctuation">)</span><br><span class="token number">36</span> <span class="token number">42</span><br><span class="token boolean">nil</span><br>user=<span class="token keyword">></span> <span class="token punctuation">(</span>time-linearity-checked <span class="token keyword">println</span> <span class="token number">42</span> <span class="token number">40</span><span class="token punctuation">)</span><br>Execution error <span class="token punctuation">(</span>AssertionError<span class="token punctuation">)</span> at user/time-linearity-checked <span class="token punctuation">(</span>REPL:<span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">.</span><br>Assert failed: <span class="token punctuation">(</span><span class="token keyword">&lt;</span> start end<span class="token punctuation">)</span></code></pre>
+<p>Если мы хотим ограничить функцию ещё и по результатам, нужно скормить нужные предикаты <code>:post</code>. Покажу на примере функции из начала заметки:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">defn</span> increase-by-one <span class="token punctuation">[</span>x<span class="token punctuation">]</span><br>    <span class="token punctuation">{</span><span class="token operator">:pre</span>  <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">pos?</span> x<span class="token punctuation">)</span><span class="token punctuation">]</span><br>     <span class="token operator">:post</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token keyword">&lt;</span> % <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">}</span><br>    <span class="token punctuation">(</span><span class="token keyword">inc</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Результат функции будет подставлен вместо <code>%</code>, и если получилось число, большее 49 — функция бросит исключение.</p>
+<p>Полезная штука, в общем. Напоминает зависимые типы в <strong>Agda</strong>; разве что код сломается на этапе выполнения, а не компиляции (но это общая беда динамически типизированных языков). Удобно строить, например, API и проверять входящие параметры не в самих эндпоинтах, а на подходах к ним, тем самым разделив логику. Что-то похожее есть в <strong>FastAPI</strong>, например: там корректность переданных в эндпоинты параметров проверяется библиотечкой <strong>pydantic.</strong></p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>
