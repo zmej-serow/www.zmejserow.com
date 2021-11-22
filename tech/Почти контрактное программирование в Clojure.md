@@ -39,7 +39,7 @@ pageTitle: Почти контрактное программирование н
 
 ```clojure
 (defn get-item [lst index]
-    {:pre [(< index (count lst)) (<= 0 index)]}
+    {:pre [(< index (count lst)) (not (neg? index))]}
     (nth lst index))
 
 user=> (get-item [1 2 3 4] 1)
@@ -51,7 +51,7 @@ Execution error (AssertionError) at user/get-item (REPL:1).
 Assert failed: (< index (count lst))
 user=> (get-item [1 2 3 4] -1)
 Execution error (AssertionError) at user/get-item (REPL:1).
-Assert failed: (<= 0 index)
+Assert failed: (not (neg? index))
 ```
 
 Так как **Clojure** — полноценный функциональный язык, функции в нём суть first-class citizens и их можно передавать как параметры в другие функции. Это открывает возможность комбинировать их друг с другом, создавая цепочки из функций, одна из которых (или несколько!) может быть таким вот валидатором:
