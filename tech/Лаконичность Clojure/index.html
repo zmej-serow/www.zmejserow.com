@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>zmej serow</title>
+        <link rel="stylesheet" href="/css/zmejstyles.css">
+        <link rel="stylesheet" href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css">
+        <script>MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+    <body>
+        <style> .number { all: unset; } </style> <!-- bulma redefines number and interferes with code highlighting -->
+        <section class="container has-text-centered is-size-3 has-text-weight-bold">
+            Титановый отвар
+        </section>
+        <section class="has-background-light">
+            <div class="container">
+                <div class="columns">
+                    <div class="column"></div>
+                    <div class="column is-narrow"><a href="/being">Бытие</a></div>
+                    <div class="column is-narrow"><a href="/tech">Техническое</a></div>
+                    <div class="column is-narrow"><a href="/walks">Прогулки</a></div>
+                    <div class="column is-narrow"><a href="/moments">Моменты</a></div>
+                    <div class="column"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content container">
+                <div class="columns">
+    <div class="column"></div>
+    <div class="column is-three-quarters">
+
+        <div class="level mb-1">
+            <div class="is-pulled-left is-size-5 has-text-info-dark">
+                Лаконичность Clojure
+            </div>
+            <div class="is-pulled-right tag is-warning">
+                 4/12/2021
+            </div>
+        </div>
+        <hr class="mt-0">
+        
+        <p>Встретил такой вот кусочек кода и сначала не понял, что тут происходит. Потом врубился и аж захотелось заметку про эту красоту набросать.</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">if-let</span> <span class="token punctuation">[</span>order <span class="token punctuation">(</span>some-> request<br>                       <span class="token operator">:route-params</span><br>                       <span class="token operator">:id</span><br>                       Integer/parseInt<br>                       get-order-by-id<span class="token punctuation">)</span><span class="token punctuation">]</span><br>    <span class="token punctuation">(</span>action-if-<span class="token boolean">true</span> order<span class="token punctuation">)</span><br>    <span class="token punctuation">(</span>action-if-<span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Что здесь делается, вкратце: обрабатывается некий словарь <code>request</code>, в котором, может быть, есть ключ <code>route-params</code>, в котором, вероятно, лежит ещё один словарь, в котором, может быть, есть ключ <code>id</code>, в котором, теоретически, может лежать некое целочисленное значение, по которому мы, возможно, можем получить ассоциированную с ним сущность <code>order</code>. По случаю такой невероятной удачи мы должны предпринять некие действия с заказом <code>order</code> (функция <code>action-if-true</code>), а иначе — сделать что-то другое (функция <code>action-if-nil</code>).</p>
+<p>Вот, например, как это можно было бы написать на питоне:</p>
+<pre class="language-python"><code class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span><br>    route_params <span class="token operator">=</span> request<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'route_params'</span><span class="token punctuation">)</span><br>    order_id <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>route_params<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br>    order <span class="token operator">=</span> get_order_by_id<span class="token punctuation">(</span>order_id<span class="token punctuation">)</span><br><span class="token keyword">except</span> AttributeError<span class="token punctuation">,</span> TypeError<span class="token punctuation">:</span><br>    <span class="token keyword">return</span> action_if_nil<span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token keyword">return</span> action_if_true<span class="token punctuation">(</span>order<span class="token punctuation">)</span> <span class="token keyword">if</span> order <span class="token keyword">else</span> action_if_nil<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>Сначала мы пытаемся, обернувшись в <code>try/except</code>, вытащить нужную информацию из <code>request</code>. Хорошо бы помнить, какие именно исключения могут быть брошены каждой инструкцией: <code>int(None)</code> бросит TypeError, <code>None.get()</code> бросит AttributeError. Ещё мы не знаем, какое исключение может кинуть <code>get_order_by_id()</code>. Можно, конечно, написать просто <code>except:</code>, но в приличных домах за такое бьют канделябром.</p>
+<p>Дальше происходит неуклюжая проверка на существование собственно заказа <code>order</code>. Почему неуклюжая? Потому что в случае неудачи мы вызываем <code>action_if_nil()</code>, который только что засветился парой строк выше. Во-первых, в глазах рябит, во-вторых, когда-нибудь можно не заметить, что эта функция вызывается в двух местах и поменять её только в одном месте. Код многословен и избыточен, не декларативен. Вместо описания бизнес-логики мы описываем то, как компьютер должен выполнять команды.</p>
+<p>Причём задача, в общем-то, вполне рядовая. Как она решена в Clojure, какие фичи языка дают такую читаемость и лаконичность?</p>
+<p>По порядку:</p>
+<ol>
+<li>
+<p><code>some-&gt;</code>. Этот макрос разворачивается в код, который последовательно будет решать все формы, подставляя результат выполнения каждой как первый аргумент следующей. А если какая-то форма отдаст nil, цепочка вызовов сразу прекращается и возвращается этот самый nil (похоже на монаду <code>Either</code>). В нашем примере первая форма — <code>request</code>, она и пойдёт в качестве параметра следующей. Получится <code>:route-params request</code>. Ну и так далее.</p>
+</li>
+<li>
+<p><code>:route-params что-нибудь</code>? Разве на первом месте в формах не должна стоять функция? Должна, всё верно. Но в Clojure кейворды в мапах (словарях) автоматически <a href="https://blog.jdriven.com/2020/07/clojure-goodness-keyword-as-function/">являются функциями</a> (реализуют интерфейс <code>IFn</code>):</p>
+<pre class="language-clojure"><code class="language-clojure">user=<span class="token keyword">></span> <span class="token punctuation">(</span><span class="token keyword">def</span> apple <span class="token punctuation">{</span><span class="token operator">:color</span> <span class="token string">"green"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><br>#<span class="token operator">'user</span>/apple<br>user=<span class="token keyword">></span> <span class="token punctuation">(</span><span class="token keyword">=</span> <span class="token punctuation">(</span><span class="token operator">:color</span> apple<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">get</span> apple <span class="token operator">:color</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token boolean">true</span></code></pre>
+<p>Так что во второй и третьей строчке мы просто получаем значения из мап: сначала из <code>request</code> добываем значение по кейворду <code>:route-params</code>, а потом из <code>:route-params</code> добываем значение по кейворду <code>:id</code>.</p>
+</li>
+<li>
+<p>Локальный <a href="http://xahlee.info/clojure/clojure_binding_forms.html">биндинг</a> <code>let</code> действует точно так же, как в хаскеле; только, на мой вкус, читается лучше:</p>
+<pre class="language-haskell"><code class="language-haskell"><span class="token keyword">let</span> <span class="token hvariable">foo</span> <span class="token operator">=</span> <span class="token string">"Hello "</span><span class="token punctuation">;</span> <span class="token hvariable">bar</span> <span class="token operator">=</span> <span class="token string">"world!"</span><br><span class="token keyword">in</span> <span class="token hvariable">foo</span> <span class="token operator">++</span> <span class="token hvariable">bar</span></code></pre>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">let</span> <span class="token punctuation">[</span>foo <span class="token string">"Hello "</span><br>      bar <span class="token string">"world!"</span><span class="token punctuation">]</span><br>    <span class="token punctuation">(</span><span class="token keyword">+</span> foo bar<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>Но в примере штука ещё более интересная, <code>if-let</code>. Этот макрос разворачивается в локальный биндинг и ветвление:</p>
+<pre class="language-clojure"><code class="language-clojure"><span class="token punctuation">(</span><span class="token keyword">let</span> <span class="token punctuation">[</span>temp-result <span class="token punctuation">(</span>some-> <span class="token keyword">..</span>.<span class="token punctuation">)</span><span class="token punctuation">]</span><br>    <span class="token punctuation">(</span><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">=</span> <span class="token boolean">nil</span> temp-result<span class="token punctuation">)</span><br>        <span class="token punctuation">(</span>action-for-<span class="token boolean">nil</span><span class="token punctuation">)</span><br>        <span class="token punctuation">(</span><span class="token keyword">let</span> <span class="token punctuation">[</span>order temp-result<span class="token punctuation">]</span><br>            <span class="token punctuation">(</span>action-for-order order<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+</li>
+</ol>
+<p>Такие пироги. Попробуйте теперь прочитать приведённый в начале заметки код. Трудно не согласиться, что именно так должны писаться программы, чтобы их было легко читать и понимать суть написанного!</p>
+<p>Пример, кстати, взят из второго издания книги Ивана Гришаева <em>«Clojure на производстве»,</em> которую я незамедлительно приобрёл у автора, как только узнал о выходе второго издания. Рекомендую каждому, кто уже не боится скобочек и хочет запилить что-то настоящее на взаправдашнем лиспе.</p>
+<p><img src="P11129-174528.jpg" alt="P11129-174528"></p>
+
+
+    </div>
+    <div class="column"></div>
+</div>
+
+            </div>
+        </section>
+    </body>
+</html>
