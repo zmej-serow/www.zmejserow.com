@@ -1,3 +1,8 @@
+# make localrun, запускать из www.zmejserow.com, а то мало ли где rm -rf стрельнет
+localrun:
+	rm -rf ./_site
+	eleventy --serve
+
 # make push m="название коммита"
 push:
 	git add .
